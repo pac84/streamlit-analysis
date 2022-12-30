@@ -21,8 +21,8 @@ x = sp.Symbol('x')
 try:
     gleichung = sp.parse_expr(eingabe)
     st.write("Folgende Gleichung wurde eingegeben")
-    gleichung = sp.latex(gleichung).replace("log", "ln")
-    st.latex(gleichung + " = 0")
+    gleichung2 = sp.latex(gleichung).replace("log", "ln")
+    st.latex(gleichung2 + " = 0")
     try:
         lsg = sp.solve(gleichung, x, rational=True)
         lsg2 = []
