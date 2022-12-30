@@ -15,7 +15,7 @@ Gib eine Gleichung in das Textfeld ein, achte auf folgende Hinweise:
 - Die Gleichung muss auf '= 0' umgestellt sein und es wird nur eine Seite der Gleichung eingegeben, also statt 2\*x = 3 muss 2\*x - 3 eingegeben werden.
 """)
 eingabe = st.text_input("Linke Seite der Gleichung = 0 eingeben")
-
+eingabe = eingabe.replace("^", "**")
 x = sp.Symbol('x')
 
 try:
