@@ -6,7 +6,7 @@ from os import minor
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter, MultipleLocator
 
-def plotten(functions, xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=True, draw_ticks=True, ticks_frequency_x=1, ticks_frequency_y=1, scale_x=1, scale_y=1, draw_pi=False):
+def plotten(functions, xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=True, draw_ticks=True, ticks_frequency_x=1, ticks_frequency_y=1, scale_x=1, scale_y=1, draw_pi=False, legende=False):
     # Settings
     colors = ['b', 'r', 'g', 'c', 'm', 'y', 'tab:cyan', 'tab:orange', 'tab:brown', 'tab:pink', 'tab:purple']
     x = sp.symbols('x')
@@ -18,7 +18,7 @@ def plotten(functions, xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=True, draw_ti
 
     fig, ax = plt.subplots(figsize=((xmax-xmin)/scale_x, (ymax-ymin)/scale_y))
     fig.patch.set_facecolor('#ffffff')        
-
+    #legende = []
     for index,function in enumerate(functions):
         if str(type(function))[19:26] != 'numbers':
             y = sp.lambdify(x, function, 'numpy')
@@ -27,7 +27,11 @@ def plotten(functions, xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=True, draw_ti
             ax.plot(xlist,ylist,colors[index%11])
         else:
             ax.plot([xmin,xmax],[sp.Float(function),sp.Float(function)],colors[index%11])
-
+    if legende:
+        leg = []
+        for i in range(len(functions)):
+            leg.append('$f$' + i*"'" + '(x)')
+        ax.legend(leg)
     ax.set(xlim=(xmin, xmax), ylim=(ymin, ymax), aspect='auto')
     ax.spines['bottom'].set_position('zero')
     ax.spines['left'].set_position('zero')
@@ -123,6 +127,7 @@ try:
         #ticks_y = st.slider('Abstand Skalierung der y-Achse', min_value=1, max_value=4, value=1)
         gitter = st.checkbox('Gitter zeichnen', value=True)
         skala = st.checkbox('Achsen skalieren', value=True)
+        legend = st.checkbox('Legende hinzufügen', value=False)
         with open("images/graph.pdf", "rb") as file:
             btn = st.download_button(
                 label="Graph speichern",
@@ -130,7 +135,7 @@ try:
                 file_name="graph.pdf",
                 mime="image/pdf"
             )
-        st.pyplot(plotten(ableitungen, xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala))
+        st.pyplot(plotten(ableitungen, xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=legend))
         
         
 except:
