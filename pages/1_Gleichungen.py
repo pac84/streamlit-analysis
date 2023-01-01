@@ -16,7 +16,14 @@ Gib eine Gleichung in das Textfeld ein, achte auf folgende Hinweise:
 - Die Gleichung muss auf '= 0' umgestellt sein und es wird nur eine Seite der Gleichung eingegeben, also statt 2\*x = 3 muss 2\*x - 3 eingegeben werden.
 - Die natürliche Exponentialfunktion $e^x$ wird mit exp(x) eingegeben.
 """)
-eingabe = st.text_input("Linke Seite der Gleichung = 0 eingeben")
+
+col1, col2 = st.columns([14,1])
+
+anzahl = st.slider('Anzahl der Ableitungen', min_value=1, max_value=4, value=1)
+with col1:
+    eingabe = st.text_input("Linke Seite der Gleichung eingeben", label_visibility='collapsed', )
+with col2:
+    st.latex(' = 0')
 eingabe = eingabe.replace("^", "**")
 x = sp.Symbol('x')
 

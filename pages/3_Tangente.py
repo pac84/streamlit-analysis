@@ -1,11 +1,12 @@
 import streamlit as st
 import sympy as sp
 import numpy as np
+import matplotlib as plt
 from pages.packages.plotFunk import *
 
-st.set_page_config(page_title="Ableitungsfunktionen", page_icon="⚖️")
+st.set_page_config(page_title="Tangentengleichung", page_icon="⚖️")
 
-st.header("Bilden von Ableitungsfunktionen")
+st.header("Berechnen der Tangentengleichung")
 expander = st.expander('Hinweise zur Eingabe')
 expander.write("""
 Gib eine Funktion in das Textfeld ein, achte auf folgende Hinweise:
@@ -16,31 +17,57 @@ Gib eine Funktion in das Textfeld ein, achte auf folgende Hinweise:
 - Gib nur den Teil rechts vom '='-Zeichen ein, also 'x**2' für $f(x) = x^2$
 - Die natürliche Exponentialfunktion $e^x$ wird mit exp(x) eingegeben.
 - Wurzeln werden mit 'sqrt(x)' eingegeben.
+Gib zusätzlich den x-Wert des Berührpunktes der Tangente an den Graphen an.
 """)
-
 col1, col2 = st.columns([1,10])
-
-anzahl = st.slider('Anzahl der Ableitungen', min_value=1, max_value=4, value=1)
 with col1:
     st.latex('f(x) = ')
 with col2:
     eingabe = st.text_input("Rechte Seite der Funktion eingeben", label_visibility='collapsed')
+col3, col4 = st.columns([1,2])
+with col3:
+    st.markdown('x-Wert des Berührpunkts')
+with col4:
+    x_Wert = st.text_input('x-Wert des Berührpunktes', label_visibility='collapsed')
 eingabe = eingabe.replace("^", "**")
 
-x = sp.Symbol('x')
 f = sp.Function('f')
+f1 = sp.Function('f1')
+t = sp.Function('t')
+x,u = sp.symbols('x u')
 
 try:
     f = sp.parse_expr(eingabe)
-    ableitungen = [f]
-    for i in range(1,anzahl+1):
-        ableitungen.append(sp.diff(ableitungen[i-1],x))
-    st.write('Die Funktion und ihre Ableitung(en):')
-    ausgabe = r'\begin{align*}'+'\n'
-    for i in range(len(ableitungen)):
-        ausgabe += 'f' + i*"'" + '(x) &= ' + sp.latex(sp.simplify(ableitungen[i])).replace('log', 'ln') + r'\\' + '\n'
-    ausgabe += r'\end{align*}'
-    st.latex(ausgabe)
+    f1 = sp.diff(f,x)
+    u = sp.sympify(x_Wert)
+    t = sp.simplify(f1.subs(x,u)*(x-u)+f.subs(x,u))
+    st.markdown('Berechnung der Ableitungsfunktion')
+    st.latex(r'''
+        \begin{align*}
+            f(x) &= %s\\
+            f'(x) &= %s
+        \end{align*}
+        ''' % (sp.latex(f), sp.latex(f1))
+    )
+    st.markdown("Berechnung der benötigten Werte")
+    st.latex(r'''
+        \begin{align*}
+        u &= %s\\
+        f(%s) &= %s = %s\\
+        f'(%s) &= %s = %s\\
+        \end{align*}
+    ''' % (sp.latex(u), sp.latex(u), sp.latex(f.subs(x,sp.UnevaluatedExpr(u))), sp.latex(f.subs(x,u)), sp.latex(u), sp.latex(f1.subs(x,sp.UnevaluatedExpr(u))), sp.latex(f1.subs(x,u)))
+    )
+    st.markdown("Aufstellen der Tangentengleichung und einsetzen der Werte")
+    st.latex(r'''
+        \begin{align*}
+            y &= f'(u) \cdot (x - u) +f(u)\\
+            y &= f'(%s) \cdot (x - %s) +f(%s)\\   
+            y &=  %s \cdot (x - %s) + %s\\
+            t:y &= %s
+        \end{align*}
+    ''' % (sp.latex(u), sp.latex(u), sp.latex(u), sp.latex(f1.subs(x,u)), sp.latex(u), sp.latex(f.subs(x,u)), sp.latex(t))
+    )
     zeichnen = st.checkbox('Zeichnen der Funktionsgraphen?')
     if zeichnen:
         st.write('Einstellungen ändern')    
@@ -54,17 +81,19 @@ try:
         #ticks_y = st.slider('Abstand Skalierung der y-Achse', min_value=1, max_value=4, value=1)
         gitter = st.checkbox('Gitter zeichnen', value=True)
         skala = st.checkbox('Achsen skalieren', value=True)
-        legend = st.checkbox('Legende hinzufügen', value=True)
-        st.pyplot(plotten(ableitungen, xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=legend, dateiname='graph-ableitung'))
+        #legend = st.checkbox('Legende hinzufügen', value=False)
+        fig = plotten([f,t], [(u,f.subs(x,u))], xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=False, dateiname='graph-tangente')
+        st.pyplot(fig)
         try:
-            with open("images/graph-ableitung.pdf", "rb") as file:
+            with open("images/graph-tangente.pdf", "rb") as file:
                     btn = st.download_button(
                     label="Graph speichern",
                     data=file,
-                    file_name="images/graph-ableitung.pdf",
+                    file_name="images/graph-tangente.pdf",
                     mime="image/pdf"
                 )
         except:
             pass
+        
 except:
-    st.write('Bitte korrekten Funktionsterm eingeben.')
+    st.markdown('Bitte Funktion und x-Wert eingeben.')

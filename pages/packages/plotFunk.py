@@ -1,12 +1,11 @@
-#coding: utf8
-
-from os import minor
-import numpy as np
 import sympy as sp
+import numpy as np
+import matplotlib as plt
+from os import minor
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter, MultipleLocator
 
-def plotten(functions, xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=True, draw_ticks=True, ticks_frequency_x=1, ticks_frequency_y=1, scale_x=1, scale_y=1, draw_pi=False):
+def plotten(functions, punkte=[], xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=True, draw_ticks=True, ticks_frequency_x=1, ticks_frequency_y=1, scale_x=1, scale_y=1, draw_pi=False, legende=False, dateiname='graph'):
     # Settings
     colors = ['b', 'r', 'g', 'c', 'm', 'y', 'tab:cyan', 'tab:orange', 'tab:brown', 'tab:pink', 'tab:purple']
     x = sp.symbols('x')
@@ -18,7 +17,7 @@ def plotten(functions, xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=True, draw_ti
 
     fig, ax = plt.subplots(figsize=((xmax-xmin)/scale_x, (ymax-ymin)/scale_y))
     fig.patch.set_facecolor('#ffffff')        
-
+    #legende = []
     for index,function in enumerate(functions):
         if str(type(function))[19:26] != 'numbers':
             y = sp.lambdify(x, function, 'numpy')
@@ -27,7 +26,11 @@ def plotten(functions, xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=True, draw_ti
             ax.plot(xlist,ylist,colors[index%11])
         else:
             ax.plot([xmin,xmax],[sp.Float(function),sp.Float(function)],colors[index%11])
-
+    if legende:
+        leg = []
+        for i in range(len(functions)):
+            leg.append('$f$' + i*"'" + '(x)')
+        ax.legend(leg)
     ax.set(xlim=(xmin, xmax), ylim=(ymin, ymax), aspect='auto')
     ax.spines['bottom'].set_position('zero')
     ax.spines['left'].set_position('zero')
@@ -72,11 +75,14 @@ def plotten(functions, xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=True, draw_ti
     #ax.fill_between(x,f,0, where=(x>0) & (x<=1.5), alpha=0.1, color='b', linewidth=0.0)
     #ax.fill_between(x,g,y2=0, where=(x>-2) & (x<=1), alpha=0.3, color='b', linewidth=0.0)
     
+    # Punkt zeichnen
+    if len(punkte)>0:
+        for i in range(len(punkte)):
+            koordinaten = r'$P_{%s}(%s|%s)$' % (i+1, sp.latex(punkte[i][0]), sp.latex(punkte[i][1]))
+            ax.plot(punkte[i][0], punkte[i][1], marker="x", markersize=10, markeredgecolor="green", markerfacecolor="green")
+            ax.text(punkte[i][0]+0.2,punkte[i][1],koordinaten,fontsize='16',fontfamily='sans-serif',color='green')
 
     #plt.plot(x, g, 'g-', linewidth=2)
     #plt.savefig('graph.png',bbox_inches='tight')
-    plt.savefig('graph.pdf',bbox_inches='tight')
+    plt.savefig('images/'+dateiname+'.pdf',bbox_inches='tight')
     return plt
-
-if __name__ == "__main__":
-    pass
