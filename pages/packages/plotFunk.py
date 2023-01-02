@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter, MultipleLocator
 from pages.packages.punkte import *
 
-def plotten(functions, punkte=[], xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=True, draw_ticks=True, ticks_frequency_x=1, ticks_frequency_y=1, scale_x=1, scale_y=1, draw_pi=False, legende=False, dateiname='graph'):
+def plotten(functions, punkte=[], xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=True, draw_ticks=True, ticks_frequency_x=1, ticks_frequency_y=1, scale_x=1, scale_y=1, draw_pi=False, legende=False, dateiname='graph', textgroesse = 14):
     # Settings
     colors = ['b', 'r', 'g', 'c', 'm', 'y', 'tab:cyan', 'tab:orange', 'tab:brown', 'tab:pink', 'tab:purple']
     x = sp.symbols('x')
@@ -37,9 +37,9 @@ def plotten(functions, punkte=[], xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=Tr
     ax.spines['left'].set_position('zero')
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
-    ax.tick_params('both',labelsize=16)
-    ax.set_xlabel('$x$', size=16, labelpad=-21, x=1+(0.03*scale_x))
-    ax.set_ylabel('$y$', size=16, labelpad=-18, y=1+(0.02*scale_y), rotation=0)
+    ax.tick_params('both',labelsize=textgroesse)
+    ax.set_xlabel('$x$', size=textgroesse, labelpad=-21, x=1+(0.03*scale_x))
+    ax.set_ylabel('$y$', size=textgroesse, labelpad=-18, y=1+(0.02*scale_y), rotation=0)
 
     if draw_ticks == True:
         minor_ticks_x = np.arange(xmin, xmax, ticks_frequency_x/2)
@@ -83,7 +83,7 @@ def plotten(functions, punkte=[], xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=Tr
             koordinaten = punkte[i].nameAusgeben()
             print(koordinaten)
             ax.plot(punkte[i].x_wert, punkte[i].y_wert, marker="x", markersize=10, markeredgecolor="green", markerfacecolor="green")
-            ax.text(punkte[i].x_wert+0.2,punkte[i].y_wert,koordinaten,fontsize='16',fontfamily='sans-serif',color='green', bbox=props)
+            ax.text(punkte[i].x_wert+0.2,punkte[i].y_wert,koordinaten,fontsize=str(textgroesse),fontfamily='sans-serif',color='green', bbox=props)
     #plt.plot(x, g, 'g-', linewidth=2)
     #plt.savefig('graph.png',bbox_inches='tight')
     plt.savefig('images/'+dateiname+'.pdf',bbox_inches='tight')

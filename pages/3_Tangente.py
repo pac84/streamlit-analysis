@@ -76,6 +76,7 @@ try:
         xmax = st.slider(r'$x_{\text{max}}$', min_value=1, max_value=10, value=5)
         ymin = st.slider(r'$y_{\text{min}}$', min_value=-10, max_value=-1, value=-5)
         ymax = st.slider(r'$y_{\text{max}}$', min_value=1, max_value=10, value=5)
+        textgroesse = st.slider('Textgröße', min_value=10, max_value=18, value=14)
         #skalierung_x = st.slider('Skalierung der x-Achse', min_value=1, max_value=4, value=1)
         #skalierung_y = st.slider('Skalierung der y-Achse', min_value=1, max_value=4, value=1)
         #ticks_x = st.slider('Abstand Skalierung der x-Achse', min_value=1, max_value=4, value=1)
@@ -83,7 +84,7 @@ try:
         gitter = st.checkbox('Gitter zeichnen', value=True)
         skala = st.checkbox('Achsen skalieren', value=True)
         #legend = st.checkbox('Legende hinzufügen', value=False)
-        fig = plotten([f,t], [beruehrpunkt], xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=False, dateiname='graph-tangente')
+        fig = plotten([f,t], [beruehrpunkt], xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=False, dateiname='graph-tangente', textgroesse=textgroesse)
         st.pyplot(fig)
         try:
             with open("images/graph-tangente.pdf", "rb") as file:
