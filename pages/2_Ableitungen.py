@@ -24,8 +24,8 @@ anzahl = st.slider('Anzahl der Ableitungen', min_value=1, max_value=4, value=1)
 with col1:
     st.latex('f(x) = ')
 with col2:
-    eingabe_abl = st.text_input("Rechte Seite der Funktion eingeben", label_visibility='collapsed')
-eingabe_abl = eingabe_abl.replace("^", "**")
+    eingabe = st.text_input("Rechte Seite der Funktion eingeben", label_visibility='collapsed')
+eingabe= eingabe.replace("^", "**")
 
 x = sp.Symbol('x')
 f = sp.Function('f')
