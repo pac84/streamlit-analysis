@@ -19,7 +19,6 @@ Gib eine Gleichung in das Textfeld ein, achte auf folgende Hinweise:
 
 col1, col2 = st.columns([14,1])
 
-anzahl = st.slider('Anzahl der Ableitungen', min_value=1, max_value=4, value=1)
 with col1:
     eingabe = st.text_input("Linke Seite der Gleichung eingeben", label_visibility='collapsed', )
 with col2:

@@ -81,7 +81,6 @@ def plotten(functions, punkte=[], xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=Tr
     if len(punkte)>0:
         for i in range(len(punkte)):
             koordinaten = punkte[i].nameAusgeben()
-            print(koordinaten)
             ax.plot(punkte[i].x_wert, punkte[i].y_wert, marker="x", markersize=10, markeredgecolor="green", markerfacecolor="green")
             ax.text(punkte[i].x_wert+0.2,punkte[i].y_wert,koordinaten,fontsize=str(textgroesse),fontfamily='sans-serif',color='green', bbox=props)
     #plt.plot(x, g, 'g-', linewidth=2)
