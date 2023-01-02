@@ -23,13 +23,13 @@ col1, col2 = st.columns([1,10])
 with col1:
     st.latex('f(x) = ')
 with col2:
-    eingabe = st.text_input("Rechte Seite der Funktion eingeben", label_visibility='collapsed')
+    eingabe_tan = st.text_input("Rechte Seite der Funktion eingeben", label_visibility='collapsed')
 col3, col4 = st.columns([1,2])
 with col3:
     st.markdown('x-Wert des Berührpunkts')
 with col4:
     x_Wert = st.text_input('x-Wert des Berührpunktes', label_visibility='collapsed')
-eingabe = eingabe.replace("^", "**")
+eingabe_tan = eingabe_tan.replace("^", "**")
 
 f = sp.Function('f')
 f1 = sp.Function('f1')
@@ -37,7 +37,7 @@ t = sp.Function('t')
 x,u = sp.symbols('x u')
 
 try:
-    f = sp.parse_expr(eingabe)
+    f = sp.parse_expr(eingabe_tan)
     f1 = sp.diff(f,x)
     u = sp.sympify(x_Wert)
     t = sp.simplify(f1.subs(x,u)*(x-u)+f.subs(x,u))
@@ -47,7 +47,7 @@ try:
             f(x) &= %s\\
             f'(x) &= %s
         \end{align*}
-        ''' % (sp.latex(f), sp.latex(f1))
+        ''' % (sp.latex(f).replace("log", "ln"), sp.latex(f1).replace("log", "ln"))
     )
     st.markdown("Berechnung der benötigten Werte")
     st.latex(r'''
