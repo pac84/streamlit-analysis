@@ -4,9 +4,9 @@ import numpy as np
 from pages.packages.plotFunk import *
 from pages.packages.punkte import *
 
-st.set_page_config(page_title="Ableitungsfunktionen", page_icon="⚖️")
+st.set_page_config(page_title="Extrempunkte bestimmen", page_icon="⚖️")
 
-st.header("Bilden von Ableitungsfunktionen")
+st.header("Extrempunkte bestimmen")
 expander = st.expander('Hinweise zur Eingabe')
 expander.write("""
 Gib eine Funktion in das Textfeld ein, achte auf folgende Hinweise:
