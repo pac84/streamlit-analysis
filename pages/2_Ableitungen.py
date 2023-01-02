@@ -30,6 +30,7 @@ eingabe= eingabe.replace("^", "**")
 x = sp.Symbol('x')
 f = sp.Function('f')
 
+
 try:
     f = sp.parse_expr(eingabe)
     ableitungen = [f]

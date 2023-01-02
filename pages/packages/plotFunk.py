@@ -4,6 +4,7 @@ import matplotlib as plt
 from os import minor
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter, MultipleLocator
+from pages.packages.punkte import *
 
 def plotten(functions, punkte=[], xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=True, draw_ticks=True, ticks_frequency_x=1, ticks_frequency_y=1, scale_x=1, scale_y=1, draw_pi=False, legende=False, dateiname='graph'):
     # Settings
@@ -76,12 +77,13 @@ def plotten(functions, punkte=[], xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=Tr
     #ax.fill_between(x,g,y2=0, where=(x>-2) & (x<=1), alpha=0.3, color='b', linewidth=0.0)
     
     # Punkt zeichnen
+    props = dict(boxstyle='round', facecolor='white', alpha=0.8)
     if len(punkte)>0:
         for i in range(len(punkte)):
-            koordinaten = r'$P_{%s}(%s|%s)$' % (i+1, sp.latex(punkte[i][0]), sp.latex(punkte[i][1]))
-            ax.plot(punkte[i][0], punkte[i][1], marker="x", markersize=10, markeredgecolor="green", markerfacecolor="green")
-            ax.text(punkte[i][0]+0.2,punkte[i][1],koordinaten,fontsize='16',fontfamily='sans-serif',color='green')
-
+            koordinaten = punkte[i].nameAusgeben()
+            print(koordinaten)
+            ax.plot(punkte[i].x_wert, punkte[i].y_wert, marker="x", markersize=10, markeredgecolor="green", markerfacecolor="green")
+            ax.text(punkte[i].x_wert+0.2,punkte[i].y_wert,koordinaten,fontsize='16',fontfamily='sans-serif',color='green', bbox=props)
     #plt.plot(x, g, 'g-', linewidth=2)
     #plt.savefig('graph.png',bbox_inches='tight')
     plt.savefig('images/'+dateiname+'.pdf',bbox_inches='tight')

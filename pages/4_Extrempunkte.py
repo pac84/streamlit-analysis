@@ -2,12 +2,7 @@ import streamlit as st
 import sympy as sp
 import numpy as np
 from pages.packages.plotFunk import *
-
-class Extrempunkt:
-    def __init__(self, x_wert, y_wert, f2strich):
-        self.x_wert = x_wert
-        self.y_wert = y_wert
-        self.f2strich = f2strich
+from pages.packages.punkte import *
 
 st.set_page_config(page_title="Ableitungsfunktionen", page_icon="⚖️")
 
@@ -45,6 +40,7 @@ try:
     ableitungen = [f]
     for i in range(1,3):
         ableitungen.append(sp.diff(ableitungen[i-1],x))
+    st.subheader("Ableitungsfunktionen")
     st.write('Die Funktion und ihre Ableitung(en):')
     ausgabe = r'\begin{align*}'+'\n'
     for i in range(len(ableitungen)):
@@ -52,6 +48,7 @@ try:
     ausgabe += r'\end{align*}'
     st.latex(ausgabe)
 
+    st.subheader("Gleichung lösen")
     st.markdown("Lösen der Gleichung $f'(x)=0$.")
     st.latex(r'%s = 0' % sp.latex(f1))
     try:
@@ -62,41 +59,74 @@ try:
                 lsg2.append(lsg[i])
         punkte = []    
         if len(lsg2) > 0:
-            
             #st.write("Lösung der Gleichung")
             for i in range(len(lsg2)):
-                punkt = Extrempunkt(lsg2[i], f.subs(x,lsg2[i]), f2.subs(x,lsg2[i]))
+                punkt = Punkt(lsg2[i], f.subs(x,lsg2[i]), r"$E_{"+str(i)+r"}")
                 punkte.append(punkt)
                 lsg_string = "x_{%d} = " % ((i+1))
                 lsg_string += sp.latex(sp.simplify(lsg2[i]))
                 lsg_string = lsg_string.replace("log", "ln")
                 st.latex(lsg_string)
-
-            st.markdown("Überprüfen der möglichen Extremstellen")
-            ausgabe2 = r"\begin{align*}"
-            pruefeExtremstelle = []
-            for i in range(len(lsg2)):
-                pruefe = f2.subs(x,lsg2[i])
-                pruefeExtremstelle.append(pruefe)
+            
+            st.subheader("Überprüfung, y-Werte")
+            st.markdown("Überprüfen der möglichen Extremstellen und Bestimmung der y-Werte")
+            i=0
+            zaehlerHP = 1
+            zaehlerTP = 1
+            
+            for punkt in punkte:
+                text1 = '#### Lösung %s' % (i+1)
+                # Minimum = 1, Maximum = 2, nichts = 0
+                punktEigenschaft = 0
+                st.markdown(text1)
+                st.markdown(r"Überprüfung für mögliche Extremstelle $x_{%s}$" % (i+1))
+                
+                pruefe = f2.subs(x,punkt.x_wert)
                 if pruefe > 0:
-                    pruefeErg = r'> 0 \quad \Rightarrow \quad \text{Minimum}'
+                    pruefeErg = " > 0"
                 elif pruefe < 0:
-                    pruefeErg = r'< 0 \quad \Rightarrow \quad \text{Maximum}'
+                    pruefeErg = " < 0"
                 else:
-                    pruefeErg = r"\quad \Rightarrow \quad \text{nicht mit $f''(x)$ überprüfbar}"
-                ausgabe2 += r"f''(%s) &= %s = %s %s \\" % (sp.latex(lsg2[i]), sp.latex(f2.subs(x,sp.UnevaluatedExpr(lsg2[i]))), sp.latex(f2.subs(x,lsg2[i])), pruefeErg)
-                ausgabe2 += "\n"
-                if pruefe == 0:
-                    erg1 = f1.subs(x,lsg2[i]-0.1)
-                    erg2 = f1.subs(x,lsg2[i]+0.1)
-                    ausgabe2 += r"f'(%s) &= %s = %s \\" % (sp.latex(lsg2[i]-0.1), sp.latex(f1.subs(x,sp.UnevaluatedExpr(lsg2[i]-0.1))), sp.latex(erg1))
+                    pruefeErg = ""
+                st.latex(r"f''\left(%s\right) = %s = %s %s \\" % (sp.latex(punkt.x_wert), sp.latex(f2.subs(x,sp.UnevaluatedExpr(punkt.x_wert))), sp.latex(f2.subs(x,punkt.x_wert)), pruefeErg))
+                if pruefe > 0:
+                    st.markdown("Es gilt $f''(x) > 0$, d.h. es handelt sich um ein Minimum.")
+                    punktEigenschaft = 1
+                elif pruefe < 0:
+                    st.markdown("Es gilt $f''(x) < 0$, d.h. es handelt sich um ein Maximum.")
+                    punktEigenschaft = 2
+                else:
+                    st.markdown("Es gilt $f''(x) = 0$, d.h. die Überprüfung muss über den Vorzeichenwechsel (VZW) von $f'(x)$ erfolgen.")
+                    erg1 = f1.subs(x,punkt.x_wert-0.1)
+                    erg2 = f1.subs(x,punkt.x_wert+0.1)
+                    ausgabe2 = r"\begin{align*}"
+                    ausgabe2 += r"f'\left(%s\right) &= %s = %s \\" % (sp.latex(punkt.x_wert-0.1), sp.latex(f1.subs(x,sp.UnevaluatedExpr(punkt.x_wert-0.1))), sp.latex(erg1))
                     ausgabe2 += "\n"
-                    ausgabe2 += r"f'(%s) &= %s = %s \\" % (sp.latex(lsg2[i]+0.1), sp.latex(f1.subs(x,sp.UnevaluatedExpr(lsg2[i]+0.1))), sp.latex(erg2))
-                    ausgabe2 += "\n"
-                ausgabe2 += "\n"
-            ausgabe2 = ausgabe2[:-3]
-            ausgabe2 += "\n" + r'\end{align*}'
-            st.latex(ausgabe2)
+                    ausgabe2 += r"f'\left(%s\right) &= %s = %s" % (sp.latex(punkt.x_wert+0.1), sp.latex(f1.subs(x,sp.UnevaluatedExpr(punkt.x_wert+0.1))), sp.latex(erg2))
+                    ausgabe2 += "\n" + r'\end{align*}'
+                    st.latex(ausgabe2)
+                    if erg1 < 0 and erg2 > 0:
+                        st.markdown("VZW von - zu +, d.h. es handelt sich um ein Minimum.")
+                        punktEigenschaft = 1
+                    elif erg1 > 0 and erg2 < 0:
+                        st.markdown("VZW von + zu -, d.h. es handelt sich um ein Maximum.")
+                        punktEigenschaft = 2
+                    else:
+                        st.markdown("Es gibt keinen VZW bei $f'(x)$, d.h. es handelt sich nicht um eine Extremstelle.")
+                i+=1
+                
+                if punktEigenschaft == 1 or punktEigenschaft == 2:
+                    st.markdown("Berechnung des y-Wertes")
+                    st.latex(r"f\left(%s\right) = %s = %s" % (sp.latex(punkt.x_wert), sp.latex(f.subs(x,sp.UnevaluatedExpr(punkt.x_wert))), sp.latex(f.subs(x,punkt.x_wert))))
+                    st.markdown("Es gilt:")
+                    if punktEigenschaft == 1:
+                        st.latex(r"T_{%d}\left(%s\middle|%s\right)" % (zaehlerTP, sp.latex(punkt.x_wert), sp.latex(punkt.y_wert)))
+                        punkt.name = r"T_{%d}" % zaehlerTP
+                        zaehlerTP += 1
+                    else:
+                        st.latex(r"H_{%d}\left(%s\middle|%s\right)" % (zaehlerTP, sp.latex(punkt.x_wert), sp.latex(punkt.y_wert)))
+                        punkt.name = r"H_{%d}" % zaehlerHP
+                        zaehlerHP += 1
         else:
             st.write("Die Gleichung ist nicht lösbar")
     except:
@@ -116,7 +146,7 @@ try:
         gitter = st.checkbox('Gitter zeichnen', value=True)
         skala = st.checkbox('Achsen skalieren', value=True)
         legend = st.checkbox('Legende hinzufügen', value=True)
-        st.pyplot(plotten([f], xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=legend, dateiname='graph-ableitung'))
+        st.pyplot(plotten([f], punkte, xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=legend, dateiname='graph-ableitung'))
         try:
             with open("images/graph-extrempunkte.pdf", "rb") as file:
                     btn = st.download_button(
