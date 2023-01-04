@@ -44,19 +44,24 @@ try:
     st.latex(ausgabe)
     zeichnen = st.checkbox('Zeichnen der Funktionsgraphen?')
     if zeichnen:
-        st.write('Einstellungen ändern')    
-        xmin = st.slider(r'$x_{\text{min}}$', min_value=-10, max_value=-1, value=-5)
-        xmax = st.slider(r'$x_{\text{max}}$', min_value=1, max_value=10, value=5)
-        ymin = st.slider(r'$y_{\text{min}}$', min_value=-10, max_value=-1, value=-5)
-        ymax = st.slider(r'$y_{\text{max}}$', min_value=1, max_value=10, value=5)
-        textgroesse = st.slider('Textgröße', min_value=10, max_value=18, value=14)
-        #skalierung_x = st.slider('Skalierung der x-Achse', min_value=1, max_value=4, value=1)
-        #skalierung_y = st.slider('Skalierung der y-Achse', min_value=1, max_value=4, value=1)
-        #ticks_x = st.slider('Abstand Skalierung der x-Achse', min_value=1, max_value=4, value=1)
-        #ticks_y = st.slider('Abstand Skalierung der y-Achse', min_value=1, max_value=4, value=1)
-        gitter = st.checkbox('Gitter zeichnen', value=True)
-        skala = st.checkbox('Achsen skalieren', value=True)
-        legend = st.checkbox('Legende hinzufügen', value=True)
+        st.write('Einstellungen ändern')
+        col_x, col_y = st.columns(2)
+        with col_x:    
+            xmin = st.slider(r'$x_{\text{min}}$', min_value=-20, max_value=-1, value=-5)
+            xmax = st.slider(r'$x_{\text{max}}$', min_value=1, max_value=20, value=5)
+        with col_y:
+            ymin = st.slider(r'$y_{\text{min}}$', min_value=-20, max_value=-1, value=-5)
+            ymax = st.slider(r'$y_{\text{max}}$', min_value=1, max_value=20, value=5)
+
+        colAuswahl1, colAuswahl2, colAuswahl3, colAuswahl4 = st.columns(4)
+        with colAuswahl1:
+            gitter = st.checkbox('Gitter zeichnen', value=True)
+        with colAuswahl2:    
+            skala = st.checkbox('Achsen skalieren', value=True)
+        with colAuswahl3:    
+            legend = st.checkbox('Legende hinzufügen', value=True)
+        with colAuswahl4:
+            textgroesse = int(st.selectbox('Schriftgröße', ('12', '13', '14', '15', '16', '17', '18'), index=2))
         st.pyplot(plotten(ableitungen, xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=legend, dateiname='graph-ableitung', textgroesse=textgroesse))
         try:
             with open("images/graph-ableitung.pdf", "rb") as file:
