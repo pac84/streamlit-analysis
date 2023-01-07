@@ -48,7 +48,7 @@ try:
             f(x) &= %s\\
             f'(x) &= %s
         \end{align*}
-        ''' % (sp.latex(f).replace("log", "ln"), sp.latex(f1).replace("log", "ln"))
+        ''' % (sp.latex(f), sp.latex(f1))
     )
     st.markdown("Berechnung der benötigten Werte")
     st.latex(r'''

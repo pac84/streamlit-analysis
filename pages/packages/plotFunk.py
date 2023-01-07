@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter, MultipleLocator
 from pages.packages.punkte import *
 
-def plotten(functions, punkte=[], xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=True, draw_ticks=True, ticks_frequency_x=1, ticks_frequency_y=1, scale_x=1, scale_y=1, draw_pi=False, legende=False, dateiname='graph', textgroesse = 14):
+def plotten(functions, punkte=[], flaeche=[], xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=True, draw_ticks=True, ticks_frequency_x=1, ticks_frequency_y=1, scale_x=1, scale_y=1, draw_pi=False, legende=False, dateiname='graph', textgroesse = 14):
     # Settings
     colors = ['b', 'r', 'g', 'c', 'm', 'y', 'tab:cyan', 'tab:orange', 'tab:brown', 'tab:pink', 'tab:purple']
     x = sp.symbols('x')
@@ -20,11 +20,14 @@ def plotten(functions, punkte=[], xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=Tr
     fig, ax = plt.subplots(figsize=((xmax-xmin)/scale_x, (ymax-ymin)/scale_y))
     fig.patch.set_facecolor('#ffffff')        
     #legende = []
+    funcs = []
+
     for index,function in enumerate(functions):
         if str(type(function))[19:26] != 'numbers':
             y = sp.lambdify(x, function, 'numpy')
             ylist = y(xlist)
             ylist[:-1][abs(np.diff(ylist)) > 100] = np.nan
+            funcs.append(ylist)
             ax.plot(xlist,ylist,colors[index%11])
         else:
             ax.plot([xmin,xmax],[sp.Float(function),sp.Float(function)],colors[index%11])
@@ -74,8 +77,11 @@ def plotten(functions, punkte=[], xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=Tr
 
 
     # Fläche zwischen Graphen
-    #ax.fill_between(x,f,0, where=(x>0) & (x<=1.5), alpha=0.1, color='b', linewidth=0.0)
-    #ax.fill_between(x,g,y2=0, where=(x>-2) & (x<=1), alpha=0.3, color='b', linewidth=0.0)
+    if len(flaeche) != 0 and len(functions)<2:
+        if len(functions) == 1:
+            ax.fill_between(xlist,funcs[0],0, where=(xlist>flaeche[0]) & (xlist<=flaeche[1]), alpha=0.3, color='b', linewidth=0.0)
+            print(funcs[0])
+        #ax.fill_between(x,g,y2=0, where=(x>-2) & (x<=1), alpha=0.3, color='b', linewidth=0.0)
     
     # Punkt zeichnen
     props = dict(boxstyle='round', facecolor='white', alpha=0.8)

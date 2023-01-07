@@ -44,7 +44,7 @@ try:
     st.write('Die Funktion und ihre Ableitung(en):')
     ausgabe = r'\begin{align*}'+'\n'
     for i in range(len(ableitungen)):
-        ausgabe += 'f' + i*"'" + '(x) &= ' + sp.latex(sp.simplify(ableitungen[i])).replace('log', 'ln') + r'\\' + '\n'
+        ausgabe += 'f' + i*"'" + '(x) &= ' + sp.latex(sp.simplify(ableitungen[i])) + r'\\' + '\n'
     ausgabe += r'\end{align*}'
     st.latex(ausgabe)
 
@@ -65,7 +65,7 @@ try:
                 punkte.append(punkt)
                 lsg_string = "x_{%d} = " % ((i+1))
                 lsg_string += sp.latex(sp.simplify(lsg2[i]))
-                lsg_string = lsg_string.replace("log", "ln")
+                lsg_string = lsg_string
                 st.latex(lsg_string)
             
             st.subheader("Überprüfung, y-Werte")

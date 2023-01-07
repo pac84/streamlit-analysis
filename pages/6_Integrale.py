@@ -3,9 +3,9 @@ import sympy as sp
 import numpy as np
 from pages.packages.plotFunk import *
 
-st.set_page_config(page_title="Ableitungsfunktionen", page_icon="⚖️")
+st.set_page_config(page_title="Integrale", page_icon="")
 
-st.header("Bilden von Ableitungsfunktionen")
+st.header("Berechnen von Integralen")
 expander = st.expander('Hinweise zur Eingabe')
 expander.write("""
 Gib eine Funktion in das Textfeld ein, achte auf folgende Hinweise:
@@ -16,11 +16,13 @@ Gib eine Funktion in das Textfeld ein, achte auf folgende Hinweise:
 - Gib nur den Teil rechts vom '='-Zeichen ein, also 'x**2' für $f(x) = x^2$
 - Die natürliche Exponentialfunktion $e^x$ wird mit exp(x) eingegeben.
 - Wurzeln werden mit 'sqrt(x)' eingegeben.
+- Die untere Grenze muss kleiner als die obere Grenze sein.
 """)
 
 col1, col2 = st.columns([1,10])
 
-anzahl = st.slider('Anzahl der Ableitungen', min_value=1, max_value=4, value=1)
+untere_Grenze = sp.nsimplify(st.slider('untere Grenze', min_value=-20.0, max_value=19.0, value=-1.0, step=0.1),rational=True)
+obere_Grenze = sp.nsimplify(st.slider('obere Grenze', min_value=-19.0, max_value=20.0, value=1.0, step=0.1),rational=True)
 with col1:
     st.latex('f(x) = ')
 with col2:
@@ -29,19 +31,38 @@ eingabe= eingabe.replace("^", "**")
 
 x = sp.Symbol('x')
 f = sp.Function('f')
-
+F = sp.Function('F')
 
 try:
     f = sp.parse_expr(eingabe)
-    ableitungen = [f]
-    for i in range(1,anzahl+1):
-        ableitungen.append(sp.diff(ableitungen[i-1],x))
-    st.write('Die Funktion und ihre Ableitung(en):')
+    F = sp.integrate(f,x)
+
+    st.write('Die eingegeben Funktion und ihre Stammfunktion:')
     ausgabe = r'\begin{align*}'+'\n'
-    for i in range(len(ableitungen)):
-        ausgabe += 'f' + i*"'" + '(x) &= ' + sp.latex(sp.simplify(ableitungen[i])) + r'\\' + '\n'
+    ausgabe += 'f(x) &= ' + sp.latex(sp.simplify(f)) + r'\\' + '\n'
+    ausgabe += 'F(x) &= ' + sp.latex(sp.simplify(F)) + r'\\' + '\n'
     ausgabe += r'\end{align*}'
     st.latex(ausgabe)
+
+    if untere_Grenze < obere_Grenze:
+        st.markdown("Berechnung des Integrals")
+        ausgabe = r'\begin{align*}'+'\n'
+        ausgabe += r'\int_{%s}^{%s}f(x)\,dx &= \int_{%s}^{%s}%s\,dx' % (sp.latex(untere_Grenze), sp.latex(obere_Grenze), sp.latex(untere_Grenze), sp.latex(obere_Grenze), sp.latex(f))
+        ausgabe += r'\\' + '\n'
+        ausgabe += r'&= \left[ %s \right]_{%s}^{%s}' % (sp.latex(F), sp.latex(untere_Grenze), sp.latex(obere_Grenze))
+        ausgabe += r'\\' + '\n'
+        ausgabe += r'&= \left( %s \right) - \left( %s \right)' % (sp.latex(F.subs(x,sp.UnevaluatedExpr(obere_Grenze))), sp.latex(F.subs(x,sp.UnevaluatedExpr(untere_Grenze))))
+        ausgabe += r'\\' + '\n'
+        ausgabe += r'&= \left( %s \right) - \left( %s \right)' % (sp.latex(F.subs(x,obere_Grenze)), sp.latex(F.subs(x,untere_Grenze)))
+        ausgabe += r'\\' + '\n'
+        ausgabe += r'&= %s' % (sp.latex(F.subs(x,obere_Grenze)-F.subs(x,untere_Grenze)))
+        ausgabe += r'\\' + '\n'
+        ausgabe += r'\end{align*}'
+        print(untere_Grenze)
+        st.latex(ausgabe)
+    else:
+        st.write("Die untere Grenze muss kleiner als die obere Grenze sein.")
+
     zeichnen = st.checkbox('Zeichnen der Funktionsgraphen?')
     if zeichnen:
         st.write('Einstellungen ändern')
@@ -62,7 +83,7 @@ try:
             legend = st.checkbox('Legende hinzufügen', value=True)
         with colAuswahl4:
             textgroesse = int(st.selectbox('Schriftgröße', ('12', '13', '14', '15', '16', '17', '18'), index=2))
-        st.pyplot(plotten(ableitungen, xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=legend, dateiname='graph-ableitung', textgroesse=textgroesse))
+        st.pyplot(plotten([f], flaeche=[untere_Grenze, obere_Grenze], xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=legend, dateiname='graph-ableitung', textgroesse=textgroesse))
         try:
             with open("images/graph-ableitung.pdf", "rb") as file:
                     btn = st.download_button(

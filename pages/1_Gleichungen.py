@@ -29,7 +29,7 @@ x = sp.Symbol('x')
 try:
     gleichung = sp.parse_expr(eingabe)
     st.write("Folgende Gleichung wurde eingegeben")
-    gleichung2 = sp.latex(gleichung).replace("log", "ln")
+    gleichung2 = sp.latex(gleichung)
     st.latex(gleichung2 + " = 0")
     try:
         lsg = sp.solve(gleichung, x, rational=True)
@@ -43,7 +43,6 @@ try:
             for i in range(len(lsg2)):
                 lsg_string = "x_{%d} = " % ((i+1))
                 lsg_string += sp.latex(sp.simplify(lsg2[i]))
-                lsg_string = lsg_string.replace("log", "ln")
                 st.latex(lsg_string)
         else:
             st.write("Die Gleichung ist nicht lösbar")
