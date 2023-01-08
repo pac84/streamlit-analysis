@@ -19,7 +19,6 @@ def plotten(functions, punkte=[], flaeche=[], name_funktion=[], xmin=-5, xmax=5,
 
     fig, ax = plt.subplots(figsize=((xmax-xmin)/scale_x, (ymax-ymin)/scale_y))
     fig.patch.set_facecolor('#ffffff')        
-    #legende = []
     funcs = []
 
     for index,function in enumerate(functions):
