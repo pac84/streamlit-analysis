@@ -80,7 +80,6 @@ def plotten(functions, punkte=[], flaeche=[], xmin=-5, xmax=5, ymin=-5, ymax=5, 
     if len(flaeche) != 0 and len(functions)<2:
         if len(functions) == 1:
             ax.fill_between(xlist,funcs[0],0, where=(xlist>flaeche[0]) & (xlist<=flaeche[1]), alpha=0.3, color='b', linewidth=0.0)
-            print(funcs[0])
         #ax.fill_between(x,g,y2=0, where=(x>-2) & (x<=1), alpha=0.3, color='b', linewidth=0.0)
     
     # Punkt zeichnen
