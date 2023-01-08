@@ -58,7 +58,6 @@ try:
         ausgabe += r'&= %s' % (sp.latex(F.subs(x,obere_Grenze)-F.subs(x,untere_Grenze)))
         ausgabe += r'\\' + '\n'
         ausgabe += r'\end{align*}'
-        print(untere_Grenze)
         st.latex(ausgabe)
     else:
         st.write("Die untere Grenze muss kleiner als die obere Grenze sein.")
@@ -83,7 +82,7 @@ try:
             legend = st.checkbox('Legende hinzufügen', value=True)
         with colAuswahl4:
             textgroesse = int(st.selectbox('Schriftgröße', ('12', '13', '14', '15', '16', '17', '18'), index=2))
-        st.pyplot(plotten([f], flaeche=[untere_Grenze, obere_Grenze], xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=legend, dateiname='graph-ableitung', textgroesse=textgroesse))
+        st.pyplot(plotten([f], flaeche=[untere_Grenze, obere_Grenze], name_funktion=['f'], xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=legend, dateiname='graph-ableitung', textgroesse=textgroesse))
         try:
             with open("images/graph-ableitung.pdf", "rb") as file:
                     btn = st.download_button(

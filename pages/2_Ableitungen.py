@@ -38,8 +38,10 @@ try:
         ableitungen.append(sp.diff(ableitungen[i-1],x))
     st.write('Die Funktion und ihre Ableitung(en):')
     ausgabe = r'\begin{align*}'+'\n'
+    legende = []
     for i in range(len(ableitungen)):
         ausgabe += 'f' + i*"'" + '(x) &= ' + sp.latex(sp.simplify(ableitungen[i])) + r'\\' + '\n'
+        legende.append('$f$' + i*"'" + '(x)')
     ausgabe += r'\end{align*}'
     st.latex(ausgabe)
     zeichnen = st.checkbox('Zeichnen der Funktionsgraphen?')
@@ -62,7 +64,7 @@ try:
             legend = st.checkbox('Legende hinzufügen', value=True)
         with colAuswahl4:
             textgroesse = int(st.selectbox('Schriftgröße', ('12', '13', '14', '15', '16', '17', '18'), index=2))
-        st.pyplot(plotten(ableitungen, xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=legend, dateiname='graph-ableitung', textgroesse=textgroesse))
+        st.pyplot(plotten(ableitungen, name_funktion=legende, xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=legend, dateiname='graph-ableitung', textgroesse=textgroesse))
         try:
             with open("images/graph-ableitung.pdf", "rb") as file:
                     btn = st.download_button(

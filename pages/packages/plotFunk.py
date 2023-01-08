@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter, MultipleLocator
 from pages.packages.punkte import *
 
-def plotten(functions, punkte=[], flaeche=[], xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=True, draw_ticks=True, ticks_frequency_x=1, ticks_frequency_y=1, scale_x=1, scale_y=1, draw_pi=False, legende=False, dateiname='graph', textgroesse = 14):
+def plotten(functions, punkte=[], flaeche=[], name_funktion=[], xmin=-5, xmax=5, ymin=-5, ymax=5, draw_grid=True, draw_ticks=True, ticks_frequency_x=1, ticks_frequency_y=1, scale_x=1, scale_y=1, draw_pi=False, legende=False, dateiname='graph', textgroesse = 14):
     # Settings
     colors = ['b', 'r', 'g', 'c', 'm', 'y', 'tab:cyan', 'tab:orange', 'tab:brown', 'tab:pink', 'tab:purple']
     x = sp.symbols('x')
@@ -32,10 +32,8 @@ def plotten(functions, punkte=[], flaeche=[], xmin=-5, xmax=5, ymin=-5, ymax=5, 
         else:
             ax.plot([xmin,xmax],[sp.Float(function),sp.Float(function)],colors[index%11])
     if legende:
-        leg = []
-        for i in range(len(functions)):
-            leg.append('$f$' + i*"'" + '(x)')
-        ax.legend(leg)
+        ax.legend(name_funktion)
+        
     ax.set(xlim=(xmin, xmax), ylim=(ymin, ymax), aspect='auto')
     ax.spines['bottom'].set_position('zero')
     ax.spines['left'].set_position('zero')

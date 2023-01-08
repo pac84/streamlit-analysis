@@ -89,7 +89,7 @@ try:
             legend = st.checkbox('Legende hinzufügen', value=True)
         with colAuswahl4:
             textgroesse = int(st.selectbox('Schriftgröße', ('12', '13', '14', '15', '16', '17', '18'), index=2))
-        fig = plotten([f,t], [beruehrpunkt], xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=False, dateiname='graph-tangente', textgroesse=textgroesse)
+        fig = plotten([f,t], [beruehrpunkt], name_funktion=['f', 't'], xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=True, dateiname='graph-tangente', textgroesse=textgroesse)
         st.pyplot(fig)
         try:
             with open("images/graph-tangente.pdf", "rb") as file:
