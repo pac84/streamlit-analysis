@@ -20,7 +20,7 @@ Gib eine Funktion in das Textfeld ein, achte auf folgende Hinweise:
 
 col1, col2 = st.columns([1,10])
 
-anzahl = st.slider('Anzahl der Ableitungen', min_value=1, max_value=4, value=1)
+anzahl = st.slider('Anzahl der Ableitungen', min_value=0, max_value=4, value=1)
 with col1:
     st.latex('f(x) = ')
 with col2:
