@@ -63,11 +63,11 @@ try:
     st.latex(r'''
         \begin{align*}
             y &= f'(u) \cdot (x - u) +f(u)\\
-            y &= f'(%s) \cdot (x - %s) +f(%s)\\   
-            y &=  %s \cdot (x - %s) + %s\\
+            y &= f'(%s) \cdot (%s) +f(%s)\\   
+            y &=  %s \cdot (%s) + %s\\
             t:y &= %s
         \end{align*}
-    ''' % (sp.latex(u), sp.latex(u), sp.latex(u), sp.latex(f1.subs(x,u)), sp.latex(u), sp.latex(f.subs(x,u)), sp.latex(t))
+    ''' % (sp.latex(u), sp.latex(x-u), sp.latex(x-u), sp.latex(f1.subs(x,u)), sp.latex(u), sp.latex(f.subs(x,u)), sp.latex(t))
     )
     zeichnen = st.checkbox('Zeichnen der Funktionsgraphen?')
     if zeichnen:
