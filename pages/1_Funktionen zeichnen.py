@@ -3,9 +3,9 @@ import sympy as sp
 import numpy as np
 from pages.packages.plotFunk import *
 
-st.set_page_config(page_title="Ableitungsfunktionen", page_icon="⚖️")
+st.set_page_config(page_title="Funktionen zeichnen", page_icon="⚖️")
 
-st.header("Bilden von Ableitungsfunktionen")
+st.header("Zeichnen von Funktionsgraphen")
 expander = st.expander('Hinweise zur Eingabe')
 expander.write("""
 Gib eine Funktion in das Textfeld ein, achte auf folgende Hinweise:
@@ -18,33 +18,44 @@ Gib eine Funktion in das Textfeld ein, achte auf folgende Hinweise:
 - Wurzeln werden mit 'sqrt(x)' eingegeben.
 """)
 
-col1, col2 = st.columns([1,6])
+functionen = []
+eingabe = []
 
-anzahl = st.slider('Anzahl der Ableitungen', min_value=0, max_value=4, value=1)
+anzahl = st.slider('Anzahl der zu zeichnenden Funktionsgraphen', min_value=1, max_value=5, value=1)
+
+col1, col2 = st.columns([1,6])
 with col1:
-    st.latex('f(x) = ')
+    for i in range(anzahl):
+        st.latex(r'f_{%d}(x) = ' % (i+1))
 with col2:
-    eingabe = st.text_input("Rechte Seite der Funktion eingeben", label_visibility='collapsed')
-eingabe= eingabe.replace("^", "**")
+    for i in range(anzahl):
+        labelEingabe = "Rechte Seite der Funktion %d eingeben" % (i+1)
+        eingabeFunk = st.text_input(labelEingabe, label_visibility='collapsed')
+        eingabeFunk = eingabeFunk.replace("^", "**")
+        #eingabeFunk = eingabeFunk + "0*x"
+        eingabe.append(eingabeFunk)
 
 x = sp.Symbol('x')
-f = sp.Function('f')
-
+#f = sp.Function('f')
 
 try:
-    f = sp.parse_expr(eingabe)
-    ableitungen = [f]
-    for i in range(1,anzahl+1):
-        ableitungen.append(sp.diff(ableitungen[i-1],x))
-    st.write('Die Funktion und ihre Ableitung(en):')
+    funktionen = []
+    if anzahl > 1:
+        st.write('Die eingebenen Funktionen:')
+    else:
+        st.write('Die eingebene Funktion:')
+
+    for eingabeFunk in eingabe:
+        funktionen.append(sp.parse_expr(eingabeFunk))
+
     ausgabe = r'\begin{align*}'+'\n'
     legende = []
-    for i in range(len(ableitungen)):
-        ausgabe += 'f' + i*"'" + '(x) &= ' + sp.latex(sp.simplify(ableitungen[i])) + r'\\' + '\n'
-        legende.append('$f$' + i*"'" + '(x)')
+    for i in range(len(funktionen)):
+        ausgabe += r'f_{' + str(i+1) + r'}(x) &= ' + sp.latex(sp.simplify(funktionen[i])) + r'\\' + '\n'
+        legende.append(r'$f_{' + str(i+1) + r'}(x)$')
     ausgabe += r'\end{align*}'
     st.latex(ausgabe)
-
+    
     zeichnen = st.checkbox('Zeichnen der Funktionsgraphen?')
     if zeichnen:
         st.write('Einstellungen ändern')
@@ -65,13 +76,13 @@ try:
             legend = st.checkbox('Legende hinzufügen', value=True)
         with colAuswahl4:
             textgroesse = int(st.selectbox('Schriftgröße', ('12', '13', '14', '15', '16', '17', '18'), index=2))
-        st.pyplot(plotten(ableitungen, name_funktion=legende, xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=legend, dateiname='graph-ableitung', textgroesse=textgroesse))
+        st.pyplot(plotten(funktionen, name_funktion=legende, xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=legend, dateiname='graph-funktionen', textgroesse=textgroesse))
         try:
-            with open("images/graph-ableitung.pdf", "rb") as file:
+            with open("images/graph-funktionen.pdf", "rb") as file:
                     btn = st.download_button(
                     label="Graph speichern",
                     data=file,
-                    file_name="images/graph-ableitung.pdf",
+                    file_name="images/graph-funktionen.pdf",
                     mime="image/pdf"
                 )
         except:
