@@ -3,9 +3,9 @@ import sympy as sp
 import numpy as np
 from pages.packages.plotFunk import *
 
-st.set_page_config(page_title="Ableitungsfunktionen", page_icon="⚖️")
+st.set_page_config(page_title="Gebrochenrationale Funktionen", page_icon="⚖️")
 
-st.header("Bilden von Ableitungsfunktionen")
+st.header("Verhalten von gebrochenrationalen Funktionen")
 expander = st.expander('Hinweise zur Eingabe')
 expander.write("""
 Gib eine Funktion in das Textfeld ein, achte auf folgende Hinweise:
