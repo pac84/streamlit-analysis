@@ -87,7 +87,7 @@ try:
                     pruefeErg = r" \neq 0"
                 else:
                     pruefeErg = ""
-                st.latex(r"f''\left(%s\right) = %s = %s %s \\" % (sp.latex(punkt.x_wert), sp.latex(f3.subs(x,sp.UnevaluatedExpr(punkt.x_wert))), sp.latex(f3.subs(x,punkt.x_wert)), pruefeErg))
+                st.latex(r"f'''\left(%s\right) = %s = %s %s \\" % (sp.latex(punkt.x_wert), sp.latex(f3.subs(x,sp.UnevaluatedExpr(punkt.x_wert))), sp.latex(f3.subs(x,punkt.x_wert)), pruefeErg))
                 if pruefe != 0:
                     st.markdown(r"Es gilt $f'''(x) \neq 0$, d.h. es handelt sich um eine Wendestelle.")
                     punktEigenschaft = 1
