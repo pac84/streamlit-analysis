@@ -3,9 +3,9 @@ import sympy as sp
 import numpy as np
 from pages.packages.plotFunk import *
 
-st.set_page_config(page_title="Trigonometrische Funktionen", page_icon="⚖️")
+st.set_page_config(page_title="Exponentialfunktionen", page_icon="⚖️")
 
-st.header("Trigonometrische Funktionen")
+st.header("Exponentialfunktionen")
 expander = st.expander('Hinweise zur Eingabe')
 expander.write("""
 Gib eine Funktion in das Textfeld ein, achte auf folgende Hinweise:
@@ -29,9 +29,8 @@ with col_cd:
 
 x = sp.Symbol('x')
 f = sp.Function('f')
-f = sp.nsimplify(a) * sp.sin(sp.factor(sp.nsimplify(b)*(x-sp.nsimplify(c))))+sp.nsimplify(d)
+f = sp.nsimplify(a) * sp.exp(sp.factor(sp.nsimplify(b)*(x-sp.nsimplify(c))))+sp.nsimplify(d)
 
-p = sp.latex(sp.nsimplify(2*sp.pi / np.abs(b)))
 
 st.write('Die eingegebne Funktion:')
 legende = ['f(x)']
@@ -40,11 +39,11 @@ ausgabe += 'f(x) = ' + sp.latex(f)
 ausgabe += r'\end{align*}'
 st.latex(ausgabe)
 st.markdown(r'''Der Graph hat folgende Parameter
-- Amplitude ist $|%.1f| = %.1f$
-- Periode ist $\frac{2\cdot \pi}{%.1f} = %s$
+- Streckung in y-Richtung $%.1f$
+- Streckung in x-Richtung $%.1f$
 - Verschiebung in x-Richtung um $%s$
 - Verschiebung in y-Richtung um $%s$
-''' % (a, np.abs(a), np.abs(b), p, sp.latex(sp.nsimplify(c)), sp.latex(sp.nsimplify(d))))
+''' % (a, b, sp.latex(sp.nsimplify(c)), sp.latex(sp.nsimplify(d))))
 
 zeichnen = st.checkbox('Zeichnen der Funktionsgraphen?')
 if zeichnen:
@@ -65,13 +64,13 @@ if zeichnen:
         legend = st.checkbox('Legende hinzufügen', value=True)
     with colAuswahl4:
         textgroesse = int(st.selectbox('Schriftgröße', ('12', '13', '14', '15', '16', '17', '18'), index=2))
-    st.pyplot(plotten([f], name_funktion=legende, xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=legend, dateiname='graph-trigonometrische-Funktion', textgroesse=textgroesse))
+    st.pyplot(plotten([f], name_funktion=legende, xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=legend, dateiname='graph-graph-Exponentialfunktion', textgroesse=textgroesse))
     try:
-        with open("images/graph-trigonometrische-Funktion.pdf", "rb") as file:
+        with open("images/graph-Exponentialfunktion.pdf", "rb") as file:
                 btn = st.download_button(
                 label="Graph speichern",
                 data=file,
-                file_name="images/graph-trigonometrische-Funktion.pdf",
+                file_name="images/graph-Exponentialfunktion.pdf",
                 mime="image/pdf"
             )
     except:
