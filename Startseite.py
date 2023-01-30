@@ -11,11 +11,11 @@ st.set_page_config(
     page_icon="🏫"
 )
 
-st.write("# Tools für Analysis")
+st.write("# Berechnungen in der Analysis")
 
 st.markdown(
     """
-    Hier finden sich einige Tools, die in der Analysis hilfreich sind. Auf der linken Seite findet sich ein Menü mit Links zu verschiedenen Tools.
+    Hier finden sich Berechnungen und Hilfen zur Analysis. Auf der linken Seite findet sich ein Menü mit Links zu verschiedenen Anwendungen.
     """
 )
 

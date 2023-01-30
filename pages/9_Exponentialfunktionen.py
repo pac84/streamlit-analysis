@@ -64,7 +64,7 @@ if zeichnen:
         legend = st.checkbox('Legende hinzufügen', value=True)
     with colAuswahl4:
         textgroesse = int(st.selectbox('Schriftgröße', ('12', '13', '14', '15', '16', '17', '18'), index=2))
-    st.pyplot(plotten([f], name_funktion=legende, xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=legend, dateiname='graph-graph-Exponentialfunktion', textgroesse=textgroesse))
+    st.pyplot(plotten([f], name_funktion=legende, xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, draw_grid=gitter, draw_ticks=skala, legende=legend, dateiname='graph-Exponentialfunktion', textgroesse=textgroesse))
     try:
         with open("images/graph-Exponentialfunktion.pdf", "rb") as file:
                 btn = st.download_button(
