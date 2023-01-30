@@ -64,7 +64,7 @@ try:
         \begin{align*}
             y &= f'(u) \cdot (x - u) +f(u)\\
             y &= f'(%s) \cdot (%s) +f(%s)\\   
-            y &=  %s \cdot (%s) + %s\\
+            y &=  %s \cdot (%s) + (%s)\\
             t:y &= %s
         \end{align*}
     ''' % (sp.latex(u), sp.latex(x-u), sp.latex(u), sp.latex(f1.subs(x,u)), sp.latex(x-u), sp.latex(f.subs(x,u)), sp.latex(t))
